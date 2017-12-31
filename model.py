@@ -43,14 +43,12 @@ class Model:
 		'uv_conv_b': tf.get_variable('uv_conv_b', shape=[2], dtype=tf.float32),
 	}
 
-	def __init__(self, batch_size, dim_1, dim_2, num_input_channels=1, num_output_channels=2, learning_rate=0.001, num_epochs=100):
+	def __init__(self, batch_size, dim_1, dim_2, num_input_channels=1, num_output_channels=2):
 		Model.batch_size = batch_size,
 		Model.dim_1 = dim_1
 		Model.dim_2 = dim_2
 		Model.num_input_channels = num_input_channels
 		Model.num_output_channels = num_output_channels
-		Model.learning_rate = learning_rate
-		Model.num_epochs = num_epochs
 
 		self.x = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_input_channels])
 		self.y = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_output_channels])
