@@ -50,12 +50,12 @@ class Model:
 		Model.num_input_channels = num_input_channels
 		Model.num_output_channels = num_output_channels
 
-		self.x = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_input_channels])
-		self.y = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_output_channels])
+		# self.x = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_input_channels])
+		# self.y = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_output_channels])
 
-	def CNN_architecture(self):
+	def CNN_architecture(self, x):
 
-		conv0_1 = tf.nn.conv2d(self.x, Model.weights['conv0_1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['conv0_1_b']
+		conv0_1 = tf.nn.conv2d(x, Model.weights['conv0_1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['conv0_1_b']
 
 		conv1_1 = tf.nn.conv2d(conv0_1, Model.weights['conv1_1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['conv1_1_b']
 		conv1_1 = tf.contrib.layers.batch_norm(conv1_1)
