@@ -84,7 +84,14 @@ class Model:
 		conv4_3 = tf.nn.conv2d(relu4_2, Model.weights['conv4_3_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['conv4_3_b']
 		relu4_3 = tf.nn.relu(conv4_3)
 
-		hyper4 = tf.contrib.layers.batch_norm(relu4_3)
-		pool4 = tf.nn.max_pool(hyper4, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+		pool4 = tf.nn.max_pool(relu4_3, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+		hyper4 = tf.contrib.layers.batch_norm(pool4)
+		up_conv1 = tf.nn.conv2d(hyper4, Model.weights['up_conv1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['up_conv1_b']
+		deconv1 = tf.layers.conv2d_transpose(up_conv1, Model.weights['deconv1_W'], padding='SAME') + Model.biases['deconv1_b']
+
+		return pool4
+
+
+model = Model(32,112,112)
 
 
