@@ -17,6 +17,10 @@ class Model:
 
 		'temp_conv1_W': tf.get_variable('temp_conv1_W', shape=[1,1,512,256], dtype=tf.float32),
 		'temp_conv2_W': tf.get_variable('temp_conv2_W', shape=[3,3,256,128], dtype=tf.float32),
+		'temp_conv3_W': tf.get_variable('temp_conv3_W', shape=[3,3,128,64], dtype=tf.float32),
+		'temp_conv4_W': tf.get_variable('temp_conv4_W', shape=[3,3,64,3], dtype=tf.float32),
+		'temp_conv5_W': tf.get_variable('temp_conv5_W', shape=[3,3,3,3], dtype=tf.float32),
+		'uv_conv_W': tf.get_variable('uv_conv_W', shape=[3,3,3,2], dtype=tf.float32),
 	}
 	biases = {
 		'conv0_1_b': tf.get_variable('conv0_1_b', shape=[3], dtype=tf.float32),
@@ -33,6 +37,10 @@ class Model:
 
 		'temp_conv1_b': tf.get_variable('temp_conv1_b', shape=[256], dtype=tf.float32),
 		'temp_conv2_b': tf.get_variable('temp_conv2_b', shape=[128], dtype=tf.float32),
+		'temp_conv3_b': tf.get_variable('temp_conv3_b', shape=[64], dtype=tf.float32),
+		'temp_conv4_b': tf.get_variable('temp_conv4_b', shape=[3], dtype=tf.float32),
+		'temp_conv5_b': tf.get_variable('temp_conv5_b', shape=[3], dtype=tf.float32),
+		'uv_conv_b': tf.get_variable('uv_conv_b', shape=[2], dtype=tf.float32),
 	}
 
 	def __init__(self, batch_size, dim_1, dim_2, num_input_channels=1, num_output_channels=2, learning_rate=0.001, num_epochs=100):
@@ -98,8 +106,21 @@ class Model:
 		add1 = tf.add(hyper3, deconv1)
 		temp_conv2 = tf.nn.conv2d(add1, Model.weights['temp_conv2_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv2_b']
 
+		deconv2 = tf.layers.conv2d_transpose(temp_conv2, 128, [3,3])
+		add2 = tf.add(hyper2, deconv2)
+		temp_conv3 = tf.nn.conv2d(add2, Model.weights['temp_conv3_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv3_b']
 
-		return pool4
+		deconv3 = tf.layers.conv2d_transpose(temp_conv3, 64, [3,3])
+		add3 = tf.add(hyper1, deconv3)
+		temp_conv4 = tf.nn.conv2d(add3, Model.weights['temp_conv4_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv4_b']
+
+		deconv4 = tf.layers.conv2d_transpose(temp_conv4, 3, [3,3])
+		add4 = tf.add(conv0_1, deconv4)
+		temp_conv5 = tf.nn.conv2d(add4, Model.weights['temp_conv5_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv5_b']
+
+		uv_conv = tf.nn.conv2d(temp_conv5, Model.weights['uv_conv_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['uv_conv_b']
+		
+		return uv_conv
 
 
 model = Model(32,112,112)
