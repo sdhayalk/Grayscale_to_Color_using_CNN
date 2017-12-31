@@ -1,3 +1,4 @@
+import numpy as np
 import cv2
 import os
 
@@ -13,9 +14,30 @@ def resize_all_images(directory_input, directory_output, dim1, dim2):
 			resized_img = cv2.resize(img, (dim1, dim2))
 			cv2.imwrite(directory_output + os.sep + current_file, resized_img)
 
-resize_all_images('G:/DL/Grayscaletocolor/data/places', 'G:/DL/Grayscaletocolor/data/places/resized', 112, 112)
 
-
-def normalize(dataset):
+def normalize_data(dataset):
 	dataset = dataset / 255.0
 	return dataset
+
+
+def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True):
+	dataset_features = []
+
+	image_files_list = os.listdir(DATASET_PATH)
+	for image_file in [image_files_list[0]]:
+		img = cv2.imread(DATASET_PATH + os.sep + image_file)
+		
+		if convert_to_yuv:
+			img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+		
+		img = np.array(img, dtype='float')
+		if normalize:
+			img = normalize_data(img)
+
+		dataset_features.append(img)
+
+	dataset_features = np.array(dataset_features, dtype='float')
+	return dataset_features
+
+# uncomment the following line to resize all images for the first time and save
+# resize_all_images('G:/DL/Grayscaletocolor/data/places', 'G:/DL/Grayscaletocolor/data/places/resized', 112, 112)
