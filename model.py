@@ -14,6 +14,9 @@ class Model:
 		'conv4_1_W': tf.get_variable('conv4_1_W', shape=[3,3,256,512], dtype=tf.float32),
 		'conv4_2_W': tf.get_variable('conv4_2_W', shape=[3,3,512,512], dtype=tf.float32),
 		'conv4_3_W': tf.get_variable('conv4_3_W', shape=[3,3,512,512], dtype=tf.float32),
+
+		'temp_conv1_W': tf.get_variable('temp_conv1_W', shape=[1,1,512,256], dtype=tf.float32),
+		'temp_conv2_W': tf.get_variable('temp_conv2_W', shape=[3,3,256,128], dtype=tf.float32),
 	}
 	biases = {
 		'conv0_1_b': tf.get_variable('conv0_1_b', shape=[3], dtype=tf.float32),
@@ -27,6 +30,9 @@ class Model:
 		'conv4_1_b': tf.get_variable('conv4_1_b', shape=[512], dtype=tf.float32),
 		'conv4_2_b': tf.get_variable('conv4_2_b', shape=[512], dtype=tf.float32),
 		'conv4_3_b': tf.get_variable('conv4_3_b', shape=[512], dtype=tf.float32),
+
+		'temp_conv1_b': tf.get_variable('temp_conv1_b', shape=[256], dtype=tf.float32),
+		'temp_conv2_b': tf.get_variable('temp_conv2_b', shape=[128], dtype=tf.float32),
 	}
 
 	def __init__(self, batch_size, dim_1, dim_2, num_input_channels=1, num_output_channels=2, learning_rate=0.001, num_epochs=100):
@@ -86,8 +92,12 @@ class Model:
 
 		pool4 = tf.nn.max_pool(relu4_3, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
 		hyper4 = tf.contrib.layers.batch_norm(pool4)
-		up_conv1 = tf.nn.conv2d(hyper4, Model.weights['up_conv1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['up_conv1_b']
-		deconv1 = tf.layers.conv2d_transpose(up_conv1, Model.weights['deconv1_W'], padding='SAME') + Model.biases['deconv1_b']
+		temp_conv1 = tf.nn.conv2d(hyper4, Model.weights['temp_conv1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv1_b']
+		
+		deconv1 = tf.layers.conv2d_transpose(temp_conv1, 256, [3,3])
+		add1 = tf.add(hyper3, deconv1)
+		temp_conv2 = tf.nn.conv2d(add1, Model.weights['temp_conv2_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv2_b']
+
 
 		return pool4
 
