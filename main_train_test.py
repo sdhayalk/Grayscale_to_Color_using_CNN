@@ -36,7 +36,7 @@ model = Model(BATCH_SIZE, \
 			  num_output_channels=NUM_OUTPUT_CHANNELS)
 
 y_predicted = model.CNN_architecture(x)
-loss = tf.losses.huber_loss(y, y_predicted)
+loss = tf.reduce_mean(tf.losses.huber_loss(y, y_predicted))
 optimizer = tf.train.AdamOptimizer().minimize(loss)
 
 with tf.Session() as sess:
@@ -49,7 +49,8 @@ with tf.Session() as sess:
 			batch_x = get_batch(dataset_train_features, i, BATCH_SIZE)
 			batch_y = get_batch(dataset_train_outputs, i, BATCH_SIZE)
 
-			batch_cost = sess.run([optimizer], feed_dict={x: batch_x, y: batch_y})
+			_, batch_cost = sess.run([optimizer, loss], feed_dict={x: batch_x, y: batch_y})
+			print(batch_cost)
 			total_cost += batch_cost
 
 		print("Epoch:", epoch, "\tCost:", total_cost)

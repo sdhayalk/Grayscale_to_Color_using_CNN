@@ -1,3 +1,9 @@
+'''
+referred from: 
+	http://tinyclouds.org/colorize/
+	http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/
+'''
+
 import tensorflow as tf
 import numpy as np
 
