@@ -5,7 +5,7 @@ referred from:
 '''
 
 import tensorflow as tf
-import numpy as np
+import numpy as np192
 
 class Model:
 	weights = {
@@ -14,15 +14,15 @@ class Model:
 		'conv1_2_W': tf.get_variable('conv1_2_W', shape=[3,3,64,64], dtype=tf.float32),
 		'conv2_1_W': tf.get_variable('conv2_1_W', shape=[3,3,64,128], dtype=tf.float32),
 		'conv2_2_W': tf.get_variable('conv2_2_W', shape=[3,3,128,128], dtype=tf.float32),
-		'conv3_1_W': tf.get_variable('conv3_1_W', shape=[3,3,128,256], dtype=tf.float32),
-		'conv3_2_W': tf.get_variable('conv3_2_W', shape=[3,3,256,256], dtype=tf.float32),
-		'conv3_3_W': tf.get_variable('conv3_3_W', shape=[3,3,256,256], dtype=tf.float32),
-		'conv4_1_W': tf.get_variable('conv4_1_W', shape=[3,3,256,512], dtype=tf.float32),
-		'conv4_2_W': tf.get_variable('conv4_2_W', shape=[3,3,512,512], dtype=tf.float32),
-		'conv4_3_W': tf.get_variable('conv4_3_W', shape=[3,3,512,512], dtype=tf.float32),
+		'conv3_1_W': tf.get_variable('conv3_1_W', shape=[3,3,128,192], dtype=tf.float32),
+		'conv3_2_W': tf.get_variable('conv3_2_W', shape=[3,3,192,192], dtype=tf.float32),
+		'conv3_3_W': tf.get_variable('conv3_3_W', shape=[3,3,192,192], dtype=tf.float32),
+		'conv4_1_W': tf.get_variable('conv4_1_W', shape=[3,3,192,256], dtype=tf.float32),
+		'conv4_2_W': tf.get_variable('conv4_2_W', shape=[3,3,256,256], dtype=tf.float32),
+		'conv4_3_W': tf.get_variable('conv4_3_W', shape=[3,3,256,256], dtype=tf.float32),
 
-		'temp_conv1_W': tf.get_variable('temp_conv1_W', shape=[1,1,512,256], dtype=tf.float32),
-		'temp_conv2_W': tf.get_variable('temp_conv2_W', shape=[3,3,256,128], dtype=tf.float32),
+		'temp_conv1_W': tf.get_variable('temp_conv1_W', shape=[1,1,256,192], dtype=tf.float32),
+		'temp_conv2_W': tf.get_variable('temp_conv2_W', shape=[3,3,192,128], dtype=tf.float32),
 		'temp_conv3_W': tf.get_variable('temp_conv3_W', shape=[3,3,128,64], dtype=tf.float32),
 		'temp_conv4_W': tf.get_variable('temp_conv4_W', shape=[3,3,64,3], dtype=tf.float32),
 		'temp_conv5_W': tf.get_variable('temp_conv5_W', shape=[3,3,3,3], dtype=tf.float32),
@@ -34,14 +34,14 @@ class Model:
 		'conv1_2_b': tf.get_variable('conv1_2_b', shape=[64], dtype=tf.float32),
 		'conv2_1_b': tf.get_variable('conv2_1_b', shape=[128], dtype=tf.float32),
 		'conv2_2_b': tf.get_variable('conv2_2_b', shape=[128], dtype=tf.float32),
-		'conv3_1_b': tf.get_variable('conv3_1_b', shape=[256], dtype=tf.float32),
-		'conv3_2_b': tf.get_variable('conv3_2_b', shape=[256], dtype=tf.float32),
-		'conv3_3_b': tf.get_variable('conv3_3_b', shape=[256], dtype=tf.float32),
-		'conv4_1_b': tf.get_variable('conv4_1_b', shape=[512], dtype=tf.float32),
-		'conv4_2_b': tf.get_variable('conv4_2_b', shape=[512], dtype=tf.float32),
-		'conv4_3_b': tf.get_variable('conv4_3_b', shape=[512], dtype=tf.float32),
+		'conv3_1_b': tf.get_variable('conv3_1_b', shape=[192], dtype=tf.float32),
+		'conv3_2_b': tf.get_variable('conv3_2_b', shape=[192], dtype=tf.float32),
+		'conv3_3_b': tf.get_variable('conv3_3_b', shape=[192], dtype=tf.float32),
+		'conv4_1_b': tf.get_variable('conv4_1_b', shape=[256], dtype=tf.float32),
+		'conv4_2_b': tf.get_variable('conv4_2_b', shape=[256], dtype=tf.float32),
+		'conv4_3_b': tf.get_variable('conv4_3_b', shape=[256], dtype=tf.float32),
 
-		'temp_conv1_b': tf.get_variable('temp_conv1_b', shape=[256], dtype=tf.float32),
+		'temp_conv1_b': tf.get_variable('temp_conv1_b', shape=[192], dtype=tf.float32),
 		'temp_conv2_b': tf.get_variable('temp_conv2_b', shape=[128], dtype=tf.float32),
 		'temp_conv3_b': tf.get_variable('temp_conv3_b', shape=[64], dtype=tf.float32),
 		'temp_conv4_b': tf.get_variable('temp_conv4_b', shape=[3], dtype=tf.float32),
@@ -117,7 +117,7 @@ class Model:
 		temp_conv1 = tf.nn.conv2d(hyper4, Model.weights['temp_conv1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv1_b']
 		# 14,14
 
-		deconv1 = tf.layers.conv2d_transpose(temp_conv1, 256, [3,3], strides=(2,2), padding='same')	# referred from: http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/
+		deconv1 = tf.layers.conv2d_transpose(temp_conv1, 192, [3,3], strides=(2,2), padding='same')	# referred from: http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/
 		add1 = tf.add(hyper3, deconv1)
 		temp_conv2 = tf.nn.conv2d(add1, Model.weights['temp_conv2_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv2_b']
 

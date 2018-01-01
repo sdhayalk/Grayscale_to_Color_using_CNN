@@ -23,9 +23,10 @@ def normalize_data(dataset):
 def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True):
 	dataset_features = []
 	dataset_outputs = []
+	count = 0
 
 	image_files_list = os.listdir(DATASET_PATH)
-	for image_file in image_files_list[0:64]:
+	for image_file in image_files_list[0:4100]:
 		img = cv2.imread(DATASET_PATH + os.sep + image_file)
 		
 		if convert_to_yuv:
@@ -37,6 +38,9 @@ def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True
 
 		dataset_features.append(img[:,:,0].reshape(img.shape[0], img.shape[1], 1))
 		dataset_outputs.append(img[:,:,1:3])
+		count += 1
+		if count % 1000 == 0:
+			print('loaded', str(count), 'images')
 
 	dataset_features = np.array(dataset_features, dtype='float')
 	dataset_outputs = np.array(dataset_outputs, dtype='float')
