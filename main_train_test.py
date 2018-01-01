@@ -49,7 +49,7 @@ with tf.Session() as sess:
 			batch_x = get_batch(dataset_train_features, i, BATCH_SIZE)
 			batch_y = get_batch(dataset_train_outputs, i, BATCH_SIZE)
 
-			_, batch_cost = sess.run([optimizer], feed_dict={x: batch_x, y: batch_y})
+			batch_cost = sess.run([optimizer], feed_dict={x: batch_x, y: batch_y})
 			total_cost += batch_cost
 
 		print("Epoch:", epoch, "\tCost:", total_cost)
