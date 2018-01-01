@@ -3,6 +3,13 @@ import cv2
 import os
 
 def resize_all_images(directory_input, directory_output, dim1, dim2):
+	'''this function resizes all images in the directory_input to dimensions dim1 and dim2 and writes them into directory_output	
+	Arguments:
+		directory_input {String} -- input directory of the images to be resized
+		directory_output {String} -- output directory of the resized images to be saved
+		dim1 {int} -- dimension 1 (width) of the resize
+		dim2 {int} -- dimension 2 (height) of the resize
+	'''
 	if not os.path.exists(directory_output):
 		os.makedirs(directory_output)
 
@@ -16,11 +23,27 @@ def resize_all_images(directory_input, directory_output, dim1, dim2):
 
 
 def normalize_data(dataset):
+	'''this function normalized the dataset by dividing by 255.0. Assuming dataset is an image which has pixel values with range 0 to 255	
+	Arguments:
+		dataset {numpy} -- numpy array dataset to be resized
+	Returns:
+		numpy array normalized dataset
+	'''
 	dataset = dataset / 255.0
 	return dataset
 
 
 def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True):
+	'''this function returns dataset features in numpy array
+	Arguments:
+		DATASET_PATH {String} -- path of folder containing all images
+	Keyword Arguments:
+		convert_to_yuv {bool} -- flag to convert to rgb image data to yuv (default: {True})
+		normalize {bool} -- flag to normalize data (default: {True})	
+	Returns:
+		dataset_features {numpy array} -- dataset's Y channel (supposed to be the input of the project)
+		dataset_outputs {numpy array} -- dataset's U V channel (supposed to be the output of the project)
+	'''
 	dataset_features = []
 	dataset_outputs = []
 	count = 0

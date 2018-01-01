@@ -5,7 +5,7 @@ referred from:
 '''
 
 import tensorflow as tf
-import numpy as np192
+import numpy as np
 
 class Model:
 	weights = {
