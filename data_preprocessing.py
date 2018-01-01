@@ -35,7 +35,7 @@ def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True
 		if normalize:
 			img = normalize_data(img)
 
-		dataset_features.append(img[:,:,0])
+		dataset_features.append(img[:,:,0].reshape(img.shape[0], img.shape[1], 1))
 		dataset_outputs.append(img[:,:,1:3])
 
 	dataset_features = np.array(dataset_features, dtype='float')
