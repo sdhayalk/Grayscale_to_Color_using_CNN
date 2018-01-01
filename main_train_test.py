@@ -11,13 +11,14 @@ def get_batch(dataset, i, BATCH_SIZE):
 		return dataset[i*BATCH_SIZE:, :]
 	return dataset[i*BATCH_SIZE:(i*BATCH_SIZE+BATCH_SIZE), :]
 
-def write_predictions(GENERATED_IMAGE_WRITE_PATH, dataset_test_features, dataset_test_predicted):
+def write_predictions(GENERATED_IMAGE_WRITE_PATH, filename, dataset_test_features, dataset_test_predicted):
 	y_channel = dataset_test_features
 	uv_channel = dataset_test_predicted
 	yuv_img = np.append(y_channel, uv_channel, axis=2)
 	yuv_img = yuv_img * 255
 	yuv_img = np.uint8(yuv_img)
 	rgb_img = cv2.cvtColor(yuv_img, cv2.COLOR_YUV2RGB)
+	cv2.imwrite(GENERATED_IMAGE_WRITE_PATH + os.sep + filename, rgb_img)
 	return rgb_img
 
 DATASET_PATH = 'G:/DL/Grayscaletocolor/data/places/resized'
@@ -35,7 +36,7 @@ y = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_OUTPUT_CHANNELS])
 dataset_features, dataset_outputs = get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True)
 dataset_train_features, dataset_train_outputs = dataset_features[:35000], dataset_outputs[:35000]
 dataset_test_features, dataset_test_outputs = dataset_features[35000:], dataset_outputs[35000:]
-print(dataset_train_features.shape, dataset_train_outputs.shape)
+print('dataset_train_features.shape:', dataset_train_features.shape, 'dataset_train_outputs.shape:', dataset_train_outputs.shape)
 NUM_EXAMPLES = dataset_train_features.shape[0]
 
 model = Model(BATCH_SIZE, \
@@ -53,6 +54,7 @@ with tf.Session() as sess:
 
 	for epoch in range(0, NUM_EPOCHS):
 		total_cost = 0
+		images_written_count = 0
 
 		for i in range(0, int(NUM_EXAMPLES/BATCH_SIZE)):
 			batch_x = get_batch(dataset_train_features, i, BATCH_SIZE)
@@ -64,8 +66,12 @@ with tf.Session() as sess:
 		print("Epoch:", epoch, "\tCost:", total_cost)
 
 
-	[dataset_test_predicted] = sess.run([y_predicted], feed_dict={x:dataset_test_features})
-	for i in range(0, dataset_test_predicted.shape[0]):
-		_ = write_predictions(GENERATED_IMAGE_WRITE_PATH, dataset_test_features[i], dataset_test_predicted[i])
+		if epoch % 100 == 0 and epoch > 0:
+			for i in range(0, int(dataset_test_features.shape[0]/BATCH_SIZE)):
+				batch_x = get_batch(dataset_test_features, i, BATCH_SIZE)
+				[batch_predicted] = sess.run([y_predicted], feed_dict={x:batch_x})
 
+				for j in range(0, batch_x.shape[0]):
+					_ = write_predictions(GENERATED_IMAGE_WRITE_PATH, str(epoch)+'_'+str(images_written_count)+'.jpg', batch_x[j], batch_predicted[j])
+					images_written_count = 0
 
