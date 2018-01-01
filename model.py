@@ -134,8 +134,8 @@ class Model:
 		temp_conv5 = tf.nn.conv2d(add4, Model.weights['temp_conv5_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['temp_conv5_b']
 
 		uv_conv = tf.nn.conv2d(temp_conv5, Model.weights['uv_conv_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['uv_conv_b']
-		
-		return uv_conv
+		uv_output = tf.nn.softmax(uv_conv)
+		return uv_output
 
 
 model = Model(32,112,112)

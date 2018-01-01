@@ -50,9 +50,21 @@ with tf.Session() as sess:
 			batch_y = get_batch(dataset_train_outputs, i, BATCH_SIZE)
 
 			_, batch_cost = sess.run([optimizer, loss], feed_dict={x: batch_x, y: batch_y})
-			print(batch_cost)
 			total_cost += batch_cost
 
 		print("Epoch:", epoch, "\tCost:", total_cost)
+
+
+	[dataset_test_predicted] = sess.run([y_predicted], feed_dict={x:dataset_test_features})
+	for i in range(0, dataset_test_predicted.shape[0]):
+		y_channel = dataset_test_features[i]
+		uv_channel = dataset_test_predicted[i]
+		yuv_img = np.append(y_channel, uv_channel, axis=2)
+		yuv_img = yuv_img * 255
+		yuv_img = np.uint8(yuv_img)
+		rgb_img = cv2.cvtColor(yuv_img, cv2.COLOR_YUV2RGB)
+
+		cv2.imshow('image',rgb_img)
+		cv2.waitKey(0)
 
 

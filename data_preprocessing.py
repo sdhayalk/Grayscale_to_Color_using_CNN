@@ -29,7 +29,7 @@ def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True
 		img = cv2.imread(DATASET_PATH + os.sep + image_file)
 		
 		if convert_to_yuv:
-			img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+			img = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
 		
 		img = np.array(img, dtype='float')
 		if normalize:
