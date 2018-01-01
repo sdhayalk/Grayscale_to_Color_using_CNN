@@ -24,10 +24,10 @@ def write_predictions(GENERATED_IMAGE_WRITE_PATH, filename, dataset_test_feature
 	cv2.imwrite(GENERATED_IMAGE_WRITE_PATH + os.sep + filename, rgb_img)
 	return rgb_img
 
-DATASET_PATH = '/home/paperspace/grayscaletocolor/data/resized'
-GENERATED_IMAGE_WRITE_PATH = '/home/paperspace/grayscaletocolor/data/generated'
-# DATASET_PATH = 'G:/DL/Grayscaletocolor/data/places/resized'
-# GENERATED_IMAGE_WRITE_PATH = 'G:/DL/Grayscaletocolor/data/places/generated'
+# DATASET_PATH = '/home/paperspace/grayscaletocolor/data/resized'
+# GENERATED_IMAGE_WRITE_PATH = '/home/paperspace/grayscaletocolor/data/generated'
+DATASET_PATH = 'G:/DL/Grayscaletocolor/data/places/resized'
+GENERATED_IMAGE_WRITE_PATH = 'G:/DL/Grayscaletocolor/data/places/generated'
 BATCH_SIZE = 32
 NUM_EPOCHS = 101
 DIM_1 = 112
@@ -39,10 +39,8 @@ x = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_INPUT_CHANNELS])
 y = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_OUTPUT_CHANNELS])
 
 dataset_features, dataset_outputs = get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True)
-dataset_train_features, dataset_train_outputs = dataset_features[:3500], dataset_outputs[:3500]
-dataset_test_features, dataset_test_outputs = dataset_features[3500:], dataset_outputs[3500:]
-# dataset_train_features, dataset_train_outputs = dataset_features, dataset_outputs
-# dataset_test_features, dataset_test_outputs = dataset_features, dataset_outputs
+dataset_train_features, dataset_train_outputs = dataset_features[:35000], dataset_outputs[:35000]
+dataset_test_features, dataset_test_outputs = dataset_features[35000:], dataset_outputs[35000:]
 print('dataset_train_features.shape:', dataset_train_features.shape, 'dataset_train_outputs.shape:', dataset_train_outputs.shape)
 NUM_EXAMPLES = dataset_train_features.shape[0]
 
@@ -76,7 +74,7 @@ with tf.Session() as sess:
 		print("Epoch:", epoch, "\tCost:", total_cost)
 
 
-		if epoch % 2 == 0 and epoch >= 0:
+		if epoch % 10 == 0 and epoch >= 0:
 			for i in range(0, int(dataset_test_features.shape[0]/BATCH_SIZE)):
 				batch_x = get_batch(dataset_test_features, i, BATCH_SIZE)
 				[batch_predicted] = sess.run([y_predicted], feed_dict={x:batch_x})

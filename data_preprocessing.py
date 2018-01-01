@@ -26,7 +26,7 @@ def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True
 	count = 0
 
 	image_files_list = os.listdir(DATASET_PATH)
-	for image_file in image_files_list[0:4100]:
+	for image_file in image_files_list:
 		img = cv2.imread(DATASET_PATH + os.sep + image_file)
 		
 		if convert_to_yuv:
