@@ -12,6 +12,9 @@ def get_batch(dataset, i, BATCH_SIZE):
 	return dataset[i*BATCH_SIZE:(i*BATCH_SIZE+BATCH_SIZE), :]
 
 def write_predictions(GENERATED_IMAGE_WRITE_PATH, filename, dataset_test_features, dataset_test_predicted):
+	if not os.path.exists(GENERATED_IMAGE_WRITE_PATH):
+		os.makedirs(GENERATED_IMAGE_WRITE_PATH)
+		
 	y_channel = dataset_test_features
 	uv_channel = dataset_test_predicted
 	yuv_img = np.append(y_channel, uv_channel, axis=2)
@@ -34,8 +37,10 @@ x = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_INPUT_CHANNELS])
 y = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_OUTPUT_CHANNELS])
 
 dataset_features, dataset_outputs = get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True)
-dataset_train_features, dataset_train_outputs = dataset_features[:35000], dataset_outputs[:35000]
-dataset_test_features, dataset_test_outputs = dataset_features[35000:], dataset_outputs[35000:]
+# dataset_train_features, dataset_train_outputs = dataset_features[:35000], dataset_outputs[:35000]
+# dataset_test_features, dataset_test_outputs = dataset_features[35000:], dataset_outputs[35000:]
+dataset_train_features, dataset_train_outputs = dataset_features, dataset_outputs
+dataset_test_features, dataset_test_outputs = dataset_features, dataset_outputs
 print('dataset_train_features.shape:', dataset_train_features.shape, 'dataset_train_outputs.shape:', dataset_train_outputs.shape)
 NUM_EXAMPLES = dataset_train_features.shape[0]
 
