@@ -7,11 +7,28 @@ from model import Model
 from data_preprocessing import get_dataset_features_in_np
 
 def get_batch(dataset, i, BATCH_SIZE):
+	'''get a batch of size BATCH_SIZE from dataset	
+	Arguments:
+		dataset {numpy array} -- dataset from which we want to extract a batch
+		i {int} -- offset of the index from where we want batch to start
+		BATCH_SIZE {int} -- batch size
+	Returns:
+		{numpy array} -- batch from the dataset
+	'''
 	if i*BATCH_SIZE+BATCH_SIZE > dataset.shape[0]:
 		return dataset[i*BATCH_SIZE:, :]
 	return dataset[i*BATCH_SIZE:(i*BATCH_SIZE+BATCH_SIZE), :]
 
 def write_predictions(GENERATED_IMAGE_WRITE_PATH, filename, dataset_test_features, dataset_test_predicted):
+	'''This function writes the colorized output by a series of conversions and modifications
+	Arguments:
+		GENERATED_IMAGE_WRITE_PATH {String} -- the path to write the generated colorized output images
+		filename {String} -- name of the file for generated colorized output image
+		dataset_test_features {numpy array} -- the original Y (input) channel of the image
+		dataset_test_predicted {numpy array} -- the predicted U V (output) channels of the image
+	Returns:
+		{numpy array} -- the converted predicted rgb image
+	'''
 	if not os.path.exists(GENERATED_IMAGE_WRITE_PATH):
 		os.makedirs(GENERATED_IMAGE_WRITE_PATH)
 
@@ -24,6 +41,7 @@ def write_predictions(GENERATED_IMAGE_WRITE_PATH, filename, dataset_test_feature
 	cv2.imwrite(GENERATED_IMAGE_WRITE_PATH + os.sep + filename, rgb_img)
 	return rgb_img
 
+''' defining some constants and hyperparameters'''
 # DATASET_PATH = '/home/paperspace/grayscaletocolor/data/resized'
 # GENERATED_IMAGE_WRITE_PATH = '/home/paperspace/grayscaletocolor/data/generated'
 DATASET_PATH = 'G:/DL/Grayscaletocolor/data/places/resized'
@@ -35,6 +53,7 @@ DIM_2 = 112
 NUM_INPUT_CHANNELS = 1
 NUM_OUTPUT_CHANNELS =  2
 
+''' defining placeholders for input and output'''
 x = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_INPUT_CHANNELS])
 y = tf.placeholder(tf.float32, shape=[None, DIM_1, DIM_2, NUM_OUTPUT_CHANNELS])
 
@@ -51,16 +70,17 @@ model = Model(BATCH_SIZE, \
 			  num_output_channels=NUM_OUTPUT_CHANNELS)
 
 y_predicted = model.CNN_architecture(x)
-loss = tf.reduce_mean(tf.losses.huber_loss(y, y_predicted))
-optimizer = tf.train.AdamOptimizer().minimize(loss)
+loss = tf.reduce_mean(tf.losses.huber_loss(y, y_predicted))	# the loss function
+optimizer = tf.train.AdamOptimizer().minimize(loss)			# the optimizer to minimize the loss
 
-with tf.Session() as sess:
-	sess.run(tf.global_variables_initializer())
+with tf.Session() as sess:	# create a TensorFlow Session as sess
+	sess.run(tf.global_variables_initializer())				# initialize all variables
 
 	for epoch in range(0, NUM_EPOCHS):
 		total_cost = 0
 		images_written_count = 0
 
+		'''training'''
 		for i in range(0, int(NUM_EXAMPLES/BATCH_SIZE)):
 			batch_x = get_batch(dataset_train_features, i, BATCH_SIZE)
 			batch_y = get_batch(dataset_train_outputs, i, BATCH_SIZE)
@@ -73,7 +93,7 @@ with tf.Session() as sess:
 
 		print("Epoch:", epoch, "\tCost:", total_cost)
 
-
+		'''testing'''
 		if epoch % 10 == 0 and epoch > 0:
 			for i in range(0, int(dataset_test_features.shape[0]/BATCH_SIZE)):
 				batch_x = get_batch(dataset_test_features, i, BATCH_SIZE)
