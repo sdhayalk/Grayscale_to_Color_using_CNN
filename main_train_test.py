@@ -68,13 +68,13 @@ with tf.Session() as sess:
 			_, batch_cost = sess.run([optimizer, loss], feed_dict={x: batch_x, y: batch_y})
 			total_cost += batch_cost
 
-			if i % 5 == 0:
-				print(str(i), 'out of', str(int(NUM_EXAMPLES/BATCH_SIZE)))
+			# if i % 5 == 0:
+				# print(str(i), 'out of', str(int(NUM_EXAMPLES/BATCH_SIZE)))
 
 		print("Epoch:", epoch, "\tCost:", total_cost)
 
 
-		if epoch % 10 == 0 and epoch >= 0:
+		if epoch % 10 == 0 and epoch > 0:
 			for i in range(0, int(dataset_test_features.shape[0]/BATCH_SIZE)):
 				batch_x = get_batch(dataset_test_features, i, BATCH_SIZE)
 				[batch_predicted] = sess.run([y_predicted], feed_dict={x:batch_x})
