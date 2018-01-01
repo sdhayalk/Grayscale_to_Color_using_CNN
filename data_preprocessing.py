@@ -22,6 +22,7 @@ def normalize_data(dataset):
 
 def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True):
 	dataset_features = []
+	dataset_outputs = []
 
 	image_files_list = os.listdir(DATASET_PATH)
 	for image_file in [image_files_list[0]]:
@@ -34,10 +35,12 @@ def get_dataset_features_in_np(DATASET_PATH, convert_to_yuv=True, normalize=True
 		if normalize:
 			img = normalize_data(img)
 
-		dataset_features.append(img)
+		dataset_features.append(img[:,:,0])
+		dataset_outputs.append(img[:,:,1:3])
 
 	dataset_features = np.array(dataset_features, dtype='float')
-	return dataset_features
+	dataset_outputs = np.array(dataset_outputs, dtype='float')
+	return dataset_features, dataset_outputs
 
 # uncomment the following line to resize all images for the first time and save
 # resize_all_images('G:/DL/Grayscaletocolor/data/places', 'G:/DL/Grayscaletocolor/data/places/resized', 112, 112)

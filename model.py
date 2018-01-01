@@ -50,8 +50,6 @@ class Model:
 		Model.num_input_channels = num_input_channels
 		Model.num_output_channels = num_output_channels
 
-		# self.x = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_input_channels])
-		# self.y = tf.placeholder(tf.float32, shape=[None, dim_1, dim_2, num_output_channels])
 
 	def CNN_architecture(self, x):
 
