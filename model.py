@@ -8,6 +8,11 @@ import tensorflow as tf
 import numpy as np
 
 class Model:
+	'''
+	This is the class for the CNN model and its parameters and hyperparameters
+	'''
+
+	# weights of the network, initialization is glorot (Xavier) initialization
 	weights = {
 		'conv0_1_W': tf.get_variable('conv0_1_W', shape=[3,3,1,3], dtype=tf.float32),
 		'conv1_1_W': tf.get_variable('conv1_1_W', shape=[3,3,3,64], dtype=tf.float32),
@@ -28,6 +33,8 @@ class Model:
 		'temp_conv5_W': tf.get_variable('temp_conv5_W', shape=[3,3,3,3], dtype=tf.float32),
 		'uv_conv_W': tf.get_variable('uv_conv_W', shape=[3,3,3,2], dtype=tf.float32),
 	}
+
+	# biases of the network, initialization is glorot (Xavier) initialization
 	biases = {
 		'conv0_1_b': tf.get_variable('conv0_1_b', shape=[3], dtype=tf.float32),
 		'conv1_1_b': tf.get_variable('conv1_1_b', shape=[64], dtype=tf.float32),
@@ -50,6 +57,16 @@ class Model:
 	}
 
 	def __init__(self, batch_size, dim_1, dim_2, num_input_channels=1, num_output_channels=2):
+		'''Constructor for the Model class.		
+		Arguments:
+			self {Model} -- instance of the class
+			batch_size {int} -- batch size for training and testing
+			dim1 {int} -- dimension 1 (width) of the resize
+			dim2 {int} -- dimension 2 (height) of the resize
+		Keyword Arguments:
+			num_input_channels {int} -- number of channels in the input dataset (default: {1})
+			num_output_channels {int} -- number of channels in the output dataset (default: {2})
+		'''
 		Model.batch_size = batch_size,
 		Model.dim_1 = dim_1
 		Model.dim_2 = dim_2
@@ -58,6 +75,13 @@ class Model:
 
 
 	def CNN_architecture(self, x):
+		'''the network architecture implementation
+		Arguments:
+			self {Model} -- instance of the class
+			x {tf.placeholder} -- placeholder for input. It must have shape as [None, dim1, dim2, num_input_channels]
+		Returns:
+			uv_output {tf.tensor} -- model output after forward pass. It will have shape [None, dim1, dim2, num_output_channels]
+		'''
 
 		conv0_1 = tf.nn.conv2d(x, Model.weights['conv0_1_W'], strides=[1,1,1,1], padding='SAME') + Model.biases['conv0_1_b']
 		# 112,112
@@ -138,6 +162,6 @@ class Model:
 		return uv_output
 
 
-model = Model(32,112,112)
+# model = Model(32,112,112)
 
 
