@@ -1,5 +1,5 @@
 # Grayscale to Color using CNN
-## Automatic Colorization of Grayscale images using Deep Learning
+# Automatic Colorization of Grayscale images using Deep Learning
 
 Developed a Convolutional Neural Network architecture to generate Color images from Grayscale input images.
 
