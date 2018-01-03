@@ -14,5 +14,5 @@ One of the issue is that it sometimes produces sepia toned images. This is becau
 Places dataset. [More details here](http://places.csail.mit.edu/)
 
 ## TODO
-Implement a better and complex loss function
-Provide sample images for input, ground truth and predicted
+1. Implement a better and complex loss function
+2. Provide sample images for input, ground truth and predicted
