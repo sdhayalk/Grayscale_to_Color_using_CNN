@@ -14,8 +14,8 @@ One of the issue is that it sometimes produces sepia toned images. This is becau
 Places dataset. [More details here](http://places.csail.mit.edu/)
 
 ## Results
-![original](images/original_good/0ace9ac43c13bf3acbab51f115282c37.jpg "Original Image")
-![generated](images/generated_good/100_91.jpgg "Generated Image")
+![original](images/original_good/0ace9ac43c13bf3acbab51f115282c37.jpg "Original Image") Original Image
+![generated](images/generated_good/100_91.jpg "Generated Image") Generated Image
 
 ## TODO
 1. Implement a better and complex loss function
