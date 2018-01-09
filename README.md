@@ -13,7 +13,11 @@ One of the issue is that it sometimes produces sepia toned images. This is becau
 ## Dataset
 Places dataset. [More details here](http://places.csail.mit.edu/)
 
-## Results
+# Results
+Here are some of the best, average and worst results
+
+## Some of the best generated colorized image
+
 ![original](images/original_good/0ace9ac43c13bf3acbab51f115282c37.jpg "<== Original Image")<== Original Image
 ![generated](images/generated_good/100_91.jpg "<== Generated Image")<== Generated Image
 
@@ -22,6 +26,17 @@ Places dataset. [More details here](http://places.csail.mit.edu/)
 
 ![original](images/original_good/0ab85079e2e4d32a29ae8e081f35d21a.jpg "<== Original Image")<== Original Image
 ![generated](images/generated_good/100_85.jpg "<== Generated Image")<== Generated Image
+
+## Some of the medium quality generated colorized image
+
+![generated](images/generated_medium/38_529.jpg "<== Generated Image")<== Generated Image
+
+![generated](images/generated_medium/38_538.jpg "<== Generated Image")<== Generated Image
+
+![generated](images/generated_medium/38_554.jpg "<== Generated Image")<== Generated Image
+
+![generated](images/generated_medium/38_560.jpg "<== Generated Image")<== Generated Image
+
 
 ## TODO
 1. Implement a better and complex loss function
