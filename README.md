@@ -51,11 +51,11 @@ Here are some of the best, average and worst results. Most of the results are se
 
 # References
 
-1) ![http://tinyclouds.org/colorize/] http://tinyclouds.org/colorize/
+1) [Automatic Colorization](http://tinyclouds.org/colorize/)
 
-2) ![http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/] 
+2) [http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/](http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/) 
 
-3) Places dataset. [More details here](http://places.csail.mit.edu/)
+3) [Places dataset.](http://places.csail.mit.edu/)
 	
 ## TODO
 1. Implement a better and complex loss function
