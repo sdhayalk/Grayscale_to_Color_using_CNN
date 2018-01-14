@@ -14,7 +14,7 @@ One of the issue is that it sometimes produces sepia toned images. This is becau
 Places dataset. [More details here](http://places.csail.mit.edu/)
 
 # Results
-Here are some of the best, average and worst results
+Here are some of the best, average and worst results. Most of the results are sepia toned. However, obvious objects such as sky, farms etc. are being colored almost correctly. After further literature search, I found that using a complex cost function that takes into account more information can greatly achieve good results and produce much lesser sepia toned images.
 
 ## Some of the best generated colorized image
 
