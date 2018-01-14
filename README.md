@@ -52,9 +52,7 @@ Here are some of the best, average and worst results. Most of the results are se
 # References
 
 1) [Automatic Colorization](http://tinyclouds.org/colorize/)
-
 2) [http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/](http://warmspringwinds.github.io/tensorflow/tf-slim/2016/11/22/upsampling-and-image-segmentation-with-tensorflow-and-tf-slim/) 
-
 3) [Places dataset.](http://places.csail.mit.edu/)
 	
 ## TODO
